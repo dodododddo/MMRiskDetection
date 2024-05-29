@@ -33,8 +33,8 @@ if __name__ == '__main__':
         }
     ]
     
-    pipe = pipeline(client, seed_template)
-    answer = pipe()
+    pipe = pipeline(client)
+    answer = pipe(seed_template)
     print('\n' + answer)
 
 

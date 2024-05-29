@@ -2,5 +2,6 @@ Dataset/*
 !.gitkeep
 TextPipeline/llama3-chat-chinese/*
 VideoPipeline/videoLLaVA/*
+LLM_API/data/*.json
 *.mp4
 __pycache__
