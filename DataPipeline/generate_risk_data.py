@@ -70,12 +70,11 @@ def generate_risk_data(client, src_path, example_path, dst_path, sample_num=600,
     
 
 if __name__ == '__main__':
-    api_key = os.getenv('DEEPSEEK_API_KEY')
-    client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
-    src_path = "./DataPipeline/dataset/ccl_2023_eval_6_train.json"
-    example_path = "./DataPipeline/dataset/no_risk_origin.json"
+    client = OpenAI(api_key=os.getenv('DEEPSEEK_API_KEY'), base_url="https://api.deepseek.com")
+    src_path = "./dataset/ccl_2023_eval_6_train.json"
+    example_path = "./dataset/no_risk_origin.json"
     # dst_path = "./DataPipeline/output/risk_diff1.json"
-    dst_path = "./DataPipeline/output/test1.json"
+    dst_path = "./output/test1.json"
     
     generate_risk_data(client, src_path, example_path, dst_path, sample_num=10)
     

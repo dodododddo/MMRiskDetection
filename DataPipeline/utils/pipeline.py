@@ -13,6 +13,18 @@ def pipeline(client, temperature=1.25):
     
     return generate
 
+def stream_pipeline(client, temperature=1.25):
+    def generate(input_text):
+        response = client.chat.completions.create(
+            model="deepseek-chat",
+            messages=input_text,
+            stream=True,
+            temperature=temperature
+        )
+        return response
+    
+    return generate
+
 def apipeline(aclient, temperature=1.25):
     async def generate(input_text):
         response = await aclient.chat.completions.create(
@@ -24,8 +36,8 @@ def apipeline(aclient, temperature=1.25):
         return response.choices[0].message.content
     
     async def batch_generate(input_texts):
-        results = await asyncio.gather(*(generate(input_text) for input_text in input_texts))
-        print(results)
+        print(input_texts[0])
+        results = await asyncio.gather(*[generate(input_text) for input_text in input_texts])
         return results
     
     return batch_generate
