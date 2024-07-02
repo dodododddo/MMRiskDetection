@@ -2,3 +2,4 @@ model/**
 !model
 !.gitkeep
 dataset/*.json
+*.pth
