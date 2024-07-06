@@ -1,5 +1,6 @@
 import av
 import numpy as np
+from PIL import Image
 
 def read_video_pyav(container, indices):
     frames = []
@@ -30,3 +31,12 @@ def pipeline(model, processor):
         return reply[reply.find("ASSISTANT:"):]
     
     return process
+
+def image_generate(model, processor, prompt, image_path):
+    # Generate from images
+    image = Image.open(image_path)
+    inputs = processor(text=prompt, images=image, padding=True, return_tensors="pt")
+    # Generate
+    generate_ids = model.generate(**inputs, max_length=512)
+    reply = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+    return reply[reply.find("ASSISTANT:"):]
