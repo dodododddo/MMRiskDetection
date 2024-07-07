@@ -1,12 +1,14 @@
+import torch
+
 def pipeline(model, tokenizer):
     def process(input_text, max_new_token=8192, temperature=0.6):
 
-        messages = [
-            {"role": "user", "content": input_text},
-        ]
+        # messages = [
+        #     {"role": "user", "content": input_text},
+        # ]
 
         input_ids = tokenizer.apply_chat_template(
-            messages, add_generation_prompt=True, return_tensors="pt"
+            input_text, add_generation_prompt=True, return_tensors="pt"
         ).to(model.device)
 
         outputs = model.generate(
