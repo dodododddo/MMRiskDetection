@@ -1,5 +1,9 @@
 model/**
 !model
+finetuned_model/**
+!finetuned_model
+checkpoint/**
+!checkpoint
 !.gitkeep
 *.swp
 dataset/*.json
@@ -7,4 +11,5 @@ dataset/CHEF
 *.pth
 .vscode/
 __pycache__
+*.pt
 

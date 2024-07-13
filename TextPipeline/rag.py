@@ -10,7 +10,7 @@ from vllm import LLM, SamplingParams
 
 @dataclass
 class VllmConfig:
-    gpu_num: int = 4
+    gpu_num: int = 2
     gpu_utilization:float = 0.2
     prefix_cache: bool = True
     
@@ -19,6 +19,7 @@ class LLMWrapper:
     def __init__(self, model: LLM | AutoModelForCausalLM | str, tokenizer=None, system_prompt=None, use_vllm=False, vllm_config:VllmConfig=None):
         if isinstance(model, str):
             if use_vllm:
+                vllm_config = vllm_config if vllm_config else VllmConfig()
                 self.model = LLM(model, tensor_parallel_size=vllm_config.gpu_num, 
                              gpu_memory_utilization=vllm_config.gpu_utilization, enable_prefix_caching=vllm_config.prefix_cache) 
             else:
@@ -62,7 +63,6 @@ class LLMWrapper:
             top_p=top_p,
         )
         response = outputs[0][input_ids.shape[-1]:]
-        # response = [outputs[i][input_ids.shape[i, -1]:] for i in range(len(outputs))]
         return self.tokenizer.decode(response, skip_special_tokens=True)
     
     def batch_generate(self, input_texts, instructs, temperature, top_p, max_new_token):
@@ -195,7 +195,7 @@ if __name__ == '__main__':
                     2. 风险点可用短语概括，若可用原文中词句可直接使用
                     注意：除该字典外不要输出任何其他内容，确保你仅仅输出一个字典'''
                     
-    ref_vectors = torch.load('embedding/represent_mean_top100_1200.pth')
+    ref_vectors = torch.load('embedding/represent_mean_top100_1200.pt')
     with open('dataset/represent_mean_top100_1200.json') as f:
         ref_docs = json.load(f)
 

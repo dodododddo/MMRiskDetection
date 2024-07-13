@@ -3,11 +3,10 @@ import ast
 import torch
 import argparse
 from FlagEmbedding import FlagModel
-from transformers import AutoTokenizer, AutoModelForCausalLM
 from tqdm import tqdm
-from utils import pipeline
-from rag import get_nearest_indices, LLMWrapper, RAGPipeline, RAGResp
-from vllm import LLM
+from rag import LLMWrapper, RAGPipeline, VllmConfig
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import get_peft_model, PeftConfig
     
 def eval(model_path, test_dataset_path, use_rag, sample_num=100, max_regenerate_num = 5, batch_size=16):
     # tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2-7B-Instruct")
@@ -29,15 +28,20 @@ def eval(model_path, test_dataset_path, use_rag, sample_num=100, max_regenerate_
         all_data = json.load(f)[:sample_num]
     
     # Load model directly
-    llm = LLMWrapper(model_path)
     if use_rag:
         embedding_model = FlagModel("./model/bge-large-zh-v1.5", query_instruction_for_retrieval="为这个句子生成表示以用于检索相关文章：",
                 use_fp16=True)
         ref_vectors = torch.load('embedding/represent_mean_top100_1200.pth')
         with open('dataset/represent_mean_top100_1200.json') as f:
             ref_docs = json.load(f)
+        llm = LLMWrapper(model_path, use_vllm=False)
         pipe = RAGPipeline(llm, embedding_model, None, ref_vectors, ref_docs)
+        
     else:
+        model = AutoModelForCausalLM.from_pretrained(model_path)
+        tokenizer = AutoTokenizer.from_pretrained(model_path, padding_side='left')
+        llm = LLMWrapper(model, tokenizer)
+        # llm = LLMWrapper(model_path, use_vllm=True, vllm_config=VllmConfig(2, 0.2))
         pipe = RAGPipeline(llm)
         
     tp = 0
