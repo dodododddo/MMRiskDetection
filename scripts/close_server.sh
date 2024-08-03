@@ -1,0 +1,16 @@
+fuser -k 1111/tcp
+fuser -k 6666/tcp
+fuser -k 6667/tcp
+fuser -k 6670/tcp
+fuser -k 9999/tcp
+fuser -k 9998/tcp
+fuser -k 1927/tcp 
+fuser -k 1928/tcp 
+fuser -k 1929/tcp 
+fuser -k 1930/tcp
+fuser -k 1931/tcp
+fuser -k 1932/tcp
+fuser -k 8000/tcp 
+fuser -k 9997/tcp 
+fuser -k 9996/tcp 
+fuser -k 9995/tcp
