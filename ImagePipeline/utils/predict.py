@@ -1,7 +1,9 @@
 import torchvision.transforms as transforms
 from PIL import Image
 import torch
-from ImagePipeline.model import get_model
+from model import get_model
+import requests
+from io import BytesIO
 
 MEAN = {
     "imagenet":[0.485, 0.456, 0.406],
@@ -13,33 +15,22 @@ STD = {
     "clip":[0.26862954, 0.26130258, 0.27577711]
 }
 
-def predict(img_path, model, arch, max_number = 50):
+def predict(img_paths:str|list, model, arch, thres=0.5):
     stat_from = "imagenet" if arch.lower().startswith("imagenet") else "clip"
     transform = transforms.Compose([
         transforms.CenterCrop(224),
         transforms.ToTensor(),
-        transforms.Normalize( mean=MEAN[stat_from], std=STD[stat_from] ),
+        transforms.Normalize( mean=MEAN[stat_from], std=STD[stat_from]),
     ])
-    # num = 0;
-    # if type(img_paths).__name__ != 'list':
-    #     img_paths = [img_paths]
-    with open('result.log', 'w') as f:
-        # for img_path in img_paths:
-            # if num == max_number: 
-            #     break
-            # num += 1
-        img = Image.open(img_path).convert("RGB")
-        img = transform(img)
-        in_tens = img.cuda().unsqueeze(0)
-        pred = model(in_tens).sigmoid().flatten().tolist()[0]
-        if (pred >= 0.5):
-            # print(f'fake {pred:.5f}')
-            # f.write('fake ' + str(round(pred, 2)) + '\n')
-            return True
-        else:
-            # print(f'real {pred:.5f}')
-            # f.write('real ' + str(round(pred, 2)) + '\n')
-            return False
+    if isinstance(img_paths, str):
+        img_paths = [img_paths]
+    imgs = [Image.open(img_path).resize((299,299), Image.LANCZOS).convert("RGB") for img_path in img_paths]
+    imgs = [transform(img) for img in imgs]
+    in_tens = torch.stack([img.cuda() for img in imgs], dim=0)
+    preds = model(in_tens).sigmoid().flatten()
+    preds = (preds > thres).tolist()
+    return True in preds
+
 
 def detect_model(arch="CLIP:ViT-L/14", weight="model/UniversalFakeDetect/pretrained_weights/fc_weights.pth"):
     model = get_model(arch)

@@ -4,4 +4,5 @@ from .recursively_read import recursively_read
 from .ocr import ocr
 from .have_face import have_face
 from .Image_pipeline import ImageData, ImagePipeline
+from .sex_detect import sex_detect_
 

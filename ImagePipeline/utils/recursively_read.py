@@ -1,6 +1,7 @@
 import os
 
 def recursively_read(rootdir, exts=["png", "jpg", "JPEG", "jpeg", "bmp"]):
+    print(rootdir)
     out = [] 
     for r, d, f in os.walk(rootdir):
         for file in f:
