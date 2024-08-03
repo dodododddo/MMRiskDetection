@@ -1,0 +1,548 @@
+@font-face {
+    font-family: 'AlimamaFangYuanTi';
+    src: url('AlimamaFangYuanTiVF-Thin.ttf') format('truetype');
+    font-weight: 1000;
+}
+
+@font-face {
+    font-family: 'AlimamaFangYuanTi-Medium';
+    src: url('AlimamaFangYuanTiVF-Thin.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'AlimamaFangYuanTi-Thin';
+    src: url('AlimamaFangYuanTiVF-Thin.ttf') format('truetype');
+    font-weight: 300;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #2e2e2e; /* 深灰色背景 */
+    color: #fff; /* 白色文本 */
+}
+
+#menu-icon {
+    font-family: 'AlimamaFangYuanTi', sans-serif;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 32px; /* 调整按钮大小 */
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    color: #fff; /* 白色图标 */
+}
+
+#menu {
+    font-family: 'AlimamaFangYuanTi', sans-serif;
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #444; /* 深灰色背景 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: right 0.3s ease-in-out;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#menu.visible {
+    right: 0;
+}
+
+#menu ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    margin: 40px 0 20px 0; /* 调整上边距 */
+}
+
+#menu ul li {
+    padding: 15px 0;
+}
+
+#menu ul li a {
+    text-decoration: none;
+    color: #ccc; /* 浅灰色文本 */
+    display: inline-block; /* 更改为inline-block使其更适应内容 */
+    font-size: 20px; /* 默认字体大小 */
+    transition: transform 0.3s ease-in-out, color 0.3s linear; /* 添加颜色过渡效果 */
+}
+
+#menu ul li a:hover {
+    color: #766ac3; /* 悬停时变色 */
+    transform: scale(1.2); /* 悬停时放大 */
+}
+
+#logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#logo img {
+    max-width: 30%; /* 确保图片宽度不超过容器的80% */
+    height: auto; /* 保持图片的原始比例 */
+}
+
+#section1 {
+    background: linear-gradient(to right, #4e4e4e 0%, #4e4e4e 9%, #2e2e2e 9%, #2e2e2e 100%),
+                radial-gradient(circle, rgba(0, 0, 0, 0.1) 10%, transparent 10.01%) 0 0 / 20px 20px,
+                radial-gradient(circle, rgba(0, 0, 0, 0.1) 10%, transparent 10.01%) 10px 10px / 20px 20px;
+}
+
+#header {
+    text-align: center;
+}
+
+#header-logo {
+    max-width: 52px; /* 调整logo大小 */
+    height: auto;
+}
+
+#decorations-mainpage {
+    font-family: 'AlimamaFangYuanTi';
+    font-size: 110px;
+    color: #3e3e3e;
+    margin-top: -50px;
+    margin-left: 46px;
+    text-align: center;
+    position: absolute;
+    pointer-events: none;
+    animation: decorations-mainpage-in 0.3s forwards;
+    animation-delay: 1s;
+    opacity: 0;
+}
+
+@keyframes decorations-mainpage-in {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    } to {
+        opacity: 1;
+        transform: translate(0px);
+    }
+}
+
+#content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    position: relative; /* 设置相对定位 */
+    overflow: visible; /* 添加溢出设置，允许外部元素可见 */
+}
+
+@keyframes subtitles_slidein {
+    from {
+        opacity: 0;
+        transform: translateX(-200px);
+    } to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+#subtitles {
+    font-family: 'AlimamaFangYuanTi';
+    flex: 1;
+    margin-left: 200px;
+    animation: subtitles_slidein 1s forwards;
+    display: inline-block;
+    position: relative;
+}
+
+.subtitles-main-text {
+    font-family: 'AlimamaFangYuanTi';
+    flex: 1;
+    margin-left: 200px;
+    margin-top: -7px;
+    font-size: 38px;
+    position: relative;
+    display: inline-block;
+    height: 10px;
+    z-index: 1;
+}
+
+.subtitles-main-text a {
+    z-index: 2;
+    display: inline-block;
+    color: #ccc;
+    text-decoration: none;
+    animation: subtitles_slidein 1s forwards;
+    transition: color 0.3s linear;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+.subtitles-main-text a:hover {
+    color: #766ac3;
+}
+
+.subtitles-hover-text {
+    font-family: 'AlimamaFangYuanTi';
+    pointer-events: none;
+    position: relative;
+    font-size: 20px;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.subtitles-main-text:hover .subtitles-hover-text {
+    animation: slide-up 0.5s forwards;
+}
+
+@keyframes slide-down {
+    0% {
+        top: -10px;
+        opacity: 0;
+    }
+    100% {
+        top: 0px;
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    0% {
+        top: -62px;
+        opacity: 0;
+    }
+    100% {
+        top: -72px;
+        opacity: 1;
+    }
+}
+
+#image-slider {
+    z-index: 0;
+    margin-right: 20px;
+    position: absolute; /* 设置绝对定位 */
+    right: 0; /* 右对齐 */
+    width: 72%; /* 设置图片组的宽度 */
+    height: auto; /* 高度自适应 */
+    padding-bottom: 40.5%; /* 16:9 长宽比 */
+    overflow: hidden;
+}
+
+.slider-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(46, 46, 46, 1) 100%);
+    pointer-events: none; /* 确保渐变层不会影响鼠标事件 */
+    z-index: 1; /* 确保渐变层在图片上方 */
+}
+
+.slider-image {
+    position: absolute;
+    top: 0;
+    right: -100%; /* 初始位置在容器外 */
+    width: 100%; /* 图片宽度自适应 */
+    height: 100%; /* 图片高度占满容器 */
+    display: none;
+}
+
+.slider-image.active {
+    display: block;
+    animation: slideIn 1s forwards; /* 添加滑入动画 */
+}
+
+@keyframes slideIn {
+    from {
+        right: -100%; /* 从容器外部滑入 */
+    }
+    to {
+        right: 0; /* 到容器内部 */
+    }
+}
+
+.slider-image.exit {
+    display: block;
+    animation: slideOut 1s forwards; /* 添加滑出动画 */
+}
+
+@keyframes slideOut {
+    from {
+        right: 0; /* 从容器内部滑出 */
+    }
+    to {
+        right: 100%; /* 滑出到容器外部 */
+    }
+}
+
+#hr1 {
+    width: 80%; 
+    color: #3e3e3e; 
+    margin-top: 70px;
+    animation: subtitles_slidein 0.3s forwards;
+    animation-delay: 1s;
+    transition: transform 0.3s ease;
+    opacity: 0;
+}
+
+#section2 {
+    background: linear-gradient(173deg, #4e4e4e 0%, #4e4e4e 18.4%, #2e2e2e 18.4%, #2e2e2e 100%);
+}
+
+#section2-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    position: relative;
+}
+
+.controls1 {
+    width: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.control1 {
+    margin-top: 60px;
+    width: 50px;
+    height: 50px;
+    background-color: #444;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.element1-container {
+    width: 90%;
+    position: relative;
+}
+
+.element1 {
+    font-family: 'AlimamaFangYuanTi';
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    animation: fadeInOut 1s ease-in-out;
+}
+
+.element1 span {
+    transform: rotate(-7deg);
+    font-size: 50px;
+    color: #3e3e3e;
+    margin-left: 150px;
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.element1 h2 {
+    margin: 0;
+    margin-top: 75px;
+    padding: 10px;
+    font-size: 50px;
+    color: #fff;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+}
+
+.element1 p {
+    font-family: 'AlimamaFangYuanTi-Medium';
+    z-index: 2;
+    margin-top: 40px;
+    margin-left: 140px;
+    margin-right: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 40%;
+    font-size: 20px;
+    color: #dfdfdf;
+    text-shadow: -2px 2px 0 #000000;
+}
+
+.element1-imgcontainer {
+    width: 480px;
+    height: 270px;
+    overflow: hidden;
+    margin-top: 180px;
+    margin-left: 20px;
+    z-index: 2;
+}
+
+.element1-imgcontainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+}
+
+.element1.active {
+    display: flex;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#ele1-bg-img {
+    position: absolute;
+    z-index: 1;
+}
+
+#hr2 {
+    width: 80%; 
+    color: #3e3e3e; 
+    margin-top: 44px;
+    animation: subtitles_slidein 0.3s forwards;
+    animation-delay: 1s;
+    transition: transform 0.3s ease;
+    opacity: 0;
+}
+
+#section3 {
+    background: linear-gradient(60deg, #3e3e3e 0%, #3e3e3e 42%, #cccccc 42%, #cccccc 50%, #2e2e2e 50%, #2e2e2e 100%);
+}
+
+#s3-bg {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(to right, rgba(46,46,46,1) 0%, rgba(46,46,46,1) 1%, rgba(0,0,0,0) 5%, 
+                                                rgba(0,0,0,0) 95%, rgba(46,46,46,1) 99%, rgba(46,46,46,1) 100%);
+}
+
+#section3-title {
+    font-family: 'AlimamaFangYuanTi';
+    z-index: 1;
+    font-size: 45px;
+    position: relative;
+    height: 535px;
+    margin-left: 59.46%;
+    transform: translate(-50%);
+}
+
+#section3-title h1 {
+    position: absolute;
+    pointer-events: none;
+    overflow: hidden;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-top: -10px;
+    writing-mode: vertical-lr;
+    transform: rotate(-30deg);
+}
+
+#section3-text {
+    font-family: 'AlimamaFangYuanTi-Thin';
+    z-index: 2;
+    position: absolute;
+    margin-top: -50%;
+}
+
+#section3-text h2 {
+    font-size: 20px;
+    background-image: linear-gradient(circle, #ffffff);
+    text-shadow: -2px 2px 0 #000000;
+    font-weight: 2000;
+}
+
+#section3-text p {
+    font-size: 15px;
+    text-shadow: -2px 2px 0 #000000;
+}
+
+#section3-text-decoration-circle {
+    position: absolute;
+    z-index: -1;
+    top: 7px; /* 调整圆形的位置 */
+    left: -10px; /* 调整圆形的位置 */
+    width: 40px; /* 圆形的宽度 */
+    height: 40px; /* 圆形的高度 */
+    background: linear-gradient(to right bottom, #3e3e3e 0%, #0b1f4e 70%, #2b569c 100%); /* 圆形的背景颜色 */
+    border-radius: 50%; /* 使元素变成圆形 */
+}
+
+#section3-text-decoration-rectangle {
+    position: absolute;
+    z-index: -1;
+    width: 200px;
+    height: 20px;
+    background: linear-gradient(to left, #3e3e3e 0%, #0f2b6d 70%, #5b84c8 100%);
+    border-radius: 10px;
+}
+
+.animated {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s, transform 1s;
+}
+
+.animate-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 隐藏返回顶端按钮 */
+#back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    font-size: 24px;
+    border: none;
+    outline: none;
+    background-color: #0062ff;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%; /* 圆形按钮 */
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 40px; /* 垂直居中 */
+    opacity: 0; /* 初始透明度为0 */
+    transition: opacity 0.5s linear, background-color 0.3s linear; /* 渐变效果 */
+}
+
+#back-to-top::before {
+    content: '^';
+    font-family: 'AlimamaFangYuanTi-Thin';
+    display: inline-block;
+    transform: translateY(4px); /* 微调位置 */
+}
+
+#back-to-top.show {
+    opacity: 1; /* 显示时透明度为1 */
+}
+
+#back-to-top:hover {
+    background-color: #a600ff; /* 悬停时背景颜色渐变 */
+}

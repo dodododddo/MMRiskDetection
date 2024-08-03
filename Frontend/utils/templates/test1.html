@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>多模态风险检测：万能沛权，你值得拥有！</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/font1.css') }}">
+<style>
+    h1   {color: red; font-size: 100px; text-align: center;}
+    h2   {color: #40B3DF; font-size: 50px; text-align: center;}
+    /* p    {color: #40B3DF; font-family: 微软雅黑; font-size: 20px; text-align: center;} */
+    a    {color: aqua; font-size: 20px; text-align: center;}
+
+    body{
+        margin:0;
+        background-color: #101010;
+        background-image: linear-gradient(rgba(160, 160, 160, 0.2) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(160, 160, 160, 0.2) 1px, transparent 1px);
+        background-size: 50px 50px; /* 调整网格线的大小 */
+    }
+
+    /* 定义动画 */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* 定义动画 */
+    @keyframes fadeInPictures {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .main-title {
+        animation: fadeIn 2s ease-in-out;
+        margin-top: 320px; /* 调整这个值以改变上边距的大小 */
+        background: linear-gradient(to right, #ff5733, #33ff57); /* 渐变色 */
+        background: linear-gradient(to top, rgba(61,64,255,1) 0%, rgba(255,61,202,0.01) 100%);
+        background-clip: text;
+        -webkit-background-clip: text; /* 将背景剪裁为文字的前景色 */
+        -webkit-text-fill-color: transparent; /* 将文字填充色设为透明 */
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    .bottom-layer {
+        position: relative;
+        z-index: -1;
+    }
+    .top-layer {
+        position: relative;
+        z-index: 1;
+    }
+
+    .spacer {
+        height: 50px; /* 调整这个值以改变空白区域的高度 */
+    }
+
+    .carousel {
+        animation-name: fadeInPictures;
+        animation-duration: 2s;
+        animation-delay: 2s;
+        animation-fill-mode: both;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 60px;
+        z-index: -1;
+        width: 576px;
+        height: 324px;
+        overflow: hidden;
+        background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    }
+    .carousel img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+    .carousel img.active {
+        opacity: 1;
+    }
+    .carousel-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+    .carousel-button.prev {
+        left: 0;
+    }
+    .carousel-button.next {
+        right: 0;
+    }
+    .gradient-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(16, 16, 16, 1) 100%);
+        pointer-events: none; /* 确保渐变层不会影响鼠标事件 */
+        z-index: 1; /* 确保渐变层在图片上方 */
+    }
+</style>
+</head>
+<body>
+    <!-- <body style="background-color: #ffffff;"> -->
+    <div>
+        <div style="opacity:1;position:fixed;top:0;left:0;right:0;width:100vw;height:50px;background-color:#202020"></div>
+        <div style="opacity:1;position:fixed;top:10px;left:180px;width:1px;height:30px;background-color:#a0a0a0"></div>
+        <a href="#" style="text-decoration: none;">
+            <p style="opacity:1;position:fixed;top:-7px;left:20px;font-size:20px;color:aliceblue">多模态风险检测</p>
+        </a>
+        <a href="#" style="text-decoration: none;">
+            <p style="opacity:1;position:fixed;top:0px;left:205px;font-size:16px;color:aliceblue">主页</p>
+        </a>
+        <a href="#function_introduction" style="text-decoration: none;">
+            <p style="opacity:1;position:fixed;top:0px;left:260px;font-size:16px;color:aliceblue">功能简介</p>
+        </a>
+        <a href="#company_use" style="text-decoration: none;">
+            <p style="opacity:1;position:fixed;top:0px;left:345px;font-size:16px;color:aliceblue">企业用户</p>
+        </a>
+        <a href="#personal_use" style="text-decoration: none;">
+            <p style="opacity:1;position:fixed;top:0px;left:430px;font-size:16px;color:aliceblue">个人用户</p>
+        </a>
+    </div>
+
+    <div>
+        <img src="{{url_for('static', filename='images/bg3.png')}}" alt="bg" style="position: absolute;top:0;left: 0;right: 0;z-index: -1;width: 939px;height: 566px;">
+        <p style="position: absolute;top: 200px;left: 100px;z-index: 1;">多模态</p>
+        
+        <div class="carousel">
+            <img src="{{url_for('static', filename='images/test1.png')}}" alt="Image 1" class="active">
+            <img src="{{url_for('static', filename='images/test2.png')}}" alt="Image 2">
+            <!-- <img src="image3.jpg" alt="Image 3"> -->
+            <button class="carousel-button prev" onclick="prevImage()">&#10094;</button>
+            <button class="carousel-button next" onclick="nextImage()">&#10095;</button>
+            <div class="gradient-overlay"></div>
+        </div>
+        <script>
+            const images = document.querySelectorAll('.carousel img');
+            let currentIndex = 0;
+    
+            function showImage(index) {
+                images.forEach((img, i) => {
+                    img.classList.toggle('active', i === index);
+                });
+            }
+    
+            function nextImage() {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+            }
+    
+            function prevImage() {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex);
+            }
+    
+            setInterval(nextImage, 10000); // 每隔10秒自动切换图片
+        </script>
+        <h1 class="main-title" style="font: AlimamaFangYuanTi, 幼圆;">多模态风险检测</h1>
+        
+    </div>
+
+    <div id="function_introduction">
+        <div class="spacer">
+            <h2>向下查看更多内容</h2>
+        </div>
+        <hr />
+        <h2 style="text-align: center;">这个链接是去B站的<h2>
+        <a href="https://www.bilibili.com/" style="text-decoration: none;">
+            <p style="text-align: center;">bilibili 干杯</p>
+        </a>
+        <blockquote>
+            <p><span style="background-color: indigo;color: white;">简介：沛权巨强。</span><br>
+                <b><div style="color: red;">我们实现的功能：</div><b>
+                    <blockquote>
+                        <p style="border-radius: 10px;border:10px solid #40B3DF;">
+                            文本风险检测、视频风险检测、音频风险检测
+                        </p>
+                    </blockquote>
+                <b><div style="color: red;">我们功能的特色：</div><b>
+                    <blockquote>
+                        <p>
+                            客制化、面向企业、面向个人
+                        </p>
+                    </blockquote>
+            </p>
+            <footer>——挑战杯？组</footer>
+        </blockquote>
+    </div>
+
+    <div id="company_use">
+        <div class="spacer"></div>
+        <hr />
+        <h2>面向企业的多模态风险识别系统</h2>
+        <a href="{{ url_for('page1') }}" style="text-decoration: none;">
+            <p style="text-align: center;">页面1</p>
+        </a>
+    </div>
+
+    <div id="personal_use">
+        <div class="spacer"></div>
+        <hr />
+        <h2>面向个人的多模态风险识别系统</h2>
+        <a href="{{ url_for('page2') }}" style="text-decoration: none;">
+            <p style="text-align: center;">页面2</p>
+        </a>
+    </div>
+</body>
+</html>

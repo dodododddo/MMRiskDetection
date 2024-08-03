@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradio Web Structure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .text-container {
+            margin-bottom: 20px;
+        }
+        .image-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gradio Web Structure Example</h1>
+    <div class="text-container">
+        <p>???</p>
+    </div>
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='images/test1.png') }}" width="256" height="256"/>
+    </div>
+    <p>
+    <a href="https://example.com">Go to Example Website</a><br>
+    <a href="{{ url_for('test1') }}">返回主页</a><br>
+    <a href="{{ url_for('page1') }}">返回page1</a><br>
+    </p>
+</body>
+</html>

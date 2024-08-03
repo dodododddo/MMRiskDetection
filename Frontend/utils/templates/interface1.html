@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=200%, user-dcalable=no">
+    <title>MMRD多模态风险检测</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles1.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo1.png') }}">
+</head>
+<body>
+    <div id="menu-icon" onclick="toggleMenu()">M</div>
+    <div id="menu" class="hidden">
+        <ul>
+            <li><a href="#section1">主页</a></li>
+            <li><a href="#section2">MMRD简介</a></li>
+            <li><a href="#section3">产品特色功能</a></li>
+        </ul>
+        <div id="logo">
+            <img src="{{ url_for('static', filename='images/logo1.png') }}" alt="logo">
+        </div>
+    </div>
+
+    <div id="section1">
+        <div id="header">
+            <img src="{{ url_for('static', filename='images/logo1.png') }}" alt="logo" id="header-logo">
+        </div>
+        <div id="decorations-mainpage">
+            <div>M</div>
+            <div>M</div>
+            <div>R</div>
+            <div>D</div>
+        </div>
+        <div id="content">
+            <div >
+                <h2>
+                    <div class="subtitles-main-text animated">
+                        <a href="#section1">主页</a>
+                        <div class="subtitles-hover-text">Main Page</div>
+                    </div>
+                </h2>
+                <h2>
+                    <div class="subtitles-main-text animated">
+                        <a href="#section2">MMRD简介</a>
+                        <div class="subtitles-hover-text">MMRD Intro</div>
+                    </div>
+                </h2><h2>
+                    <div class="subtitles-main-text animated">
+                        <a href="#section3">产品特色功能</a>
+                        <div class="subtitles-hover-text">Product Features</div>
+                    </div>
+                </h2><h2>
+                    <div class="subtitles-main-text animated">
+                        <a href="#section4">立即体验！</a>
+                        <div class="subtitles-hover-text">Try Now!</div>
+                    </div>
+                </h2>
+            </div>
+            <div id="image-slider">
+                <img src="{{ url_for('static', filename='images/gradio1.png') }}" alt="Image 1" class="slider-image">
+                <img src="{{ url_for('static', filename='images/gradio8.png') }}" alt="Image 2" class="slider-image">
+                <img src="{{ url_for('static', filename='images/gradio2.png') }}" alt="Image 3" class="slider-image">
+                <img src="{{ url_for('static', filename='images/gradio5.png') }}" alt="Image 4" class="slider-image">
+                <img src="{{ url_for('static', filename='images/gradio6.png') }}" alt="Image 5" class="slider-image">
+                <img src="{{ url_for('static', filename='images/gradio7.png') }}" alt="Image 6" class="slider-image">
+                <div class="slider-overlay"></div>
+            </div>
+        </div>
+        <hr id="hr1" style="margin-top: 100px;"/>
+    </div>
+
+    <div id="section2">
+        <div id="section2-content">
+            <div class="controls1 animated">
+                <div class="control1" id="control-left">&#9664;</div>
+            </div>
+    
+            <div class="element1-container">
+                <div class="element1">
+                    <span class="animated" style="margin-top: 30px;">SUMMARY</span>
+                    <h2 class="animated">综述</h2>
+                    <p class="animated"><br>· 本团队认为引入多模态的、通用的理解能力是解决现有风险检测方法局限性的关键。<br><br>
+                                        · 大语言模型(Large Language Model, LLM)与多模态模型(Multimodal Large Language Model, MLLM)为我们提供了重要的基础组件。<br><br>
+                                        · 基于大模型的通用理解能力和模态融合能力，结合多种先进的、不同层次的技术，我们构建了一个强大的、可私有化部署的、多模态通用风险内容检测与分析平台。</p>
+                    <div class="element1-imgcontainer animated">
+                        <img src="{{ url_for('static', filename='images/架构图.png') }}" alt="element1-1">    
+                    </div>
+                    <div class="animated" id="ele1-bg-img" style="margin-top: 120px; margin-left: 300px; width: 500px; height: 200px; background-color: #813030;"></div>
+                </div>
+                <div class="element1">
+                    <span class="animated" style="margin-top: 29px; margin-left: 20px;">TEXT RISK DETECTION</span>
+                    <h2 class="animated">文本风险检测</h2>
+                    <p class="animated"><br>两层次文本风险分类：<br>
+                                        ① 先检测文本是否包含暴力、色情、谣言、煽动、诈骗等风险。<br>
+                                        ② 如果文本含有涉诈风险，则再对可能隐含的诈骗类型进行细分类。<br><br>
+                                        文本风险点抽取：<br>
+                                        借鉴关键词抽取的常用方法，如KeyBERT和KeyLLM。<br><br>
+                                        相似案例检索与规避风险建议生成：<br>
+                                        通过更新风险案例库而非重新微调模型的方式来实现系统的持续进化能力。<br><br>
+                                        风险摘要生成与风险分析：<br>
+                                        使用few-shot设置，通过多轮对话引导控制模型生成内容，提高摘要质量。<br><br></p>
+                    <div class="element1-imgcontainer animated">
+                        <img src="{{ url_for('static', filename='images/gradio3.png') }}" alt="element1-2">
+                    </div>
+                    <div class="animated" id="ele1-bg-img" style="margin-top: 80px; margin-left: 480px; width: 400px; height: 300px; background-color: #367a2e;"></div>
+                </div>
+                <div class="element1">
+                    <span class="animated" style="margin-top: 24px; margin-left: 20px;">PICTURE RISK DETECTION</span>
+                    <h2 class="animated">图像风险检测</h2>
+                    <p class="animated">图像风险检测的几个方面：<br>
+                                        ① 是否伪造（包括背景、人脸等）<br>
+                                        ② 人脸是否经过AI换脸<br>
+                                        ③ 是否具有裸露、色情的部分<br>
+                                        ④ 对于文本图像，这些文本是否本身含有风险信息<br>
+                                        ⑤ 内容是否存在风险<br><br>
+                                        图像风险检测使用的模型：<br>
+                                        ① UniversalFakeDetect（伪造图像检测）<br>
+                                        ② Combining EfficientNet and Vision Transformers for Video Deepfake Detection（换脸图像检测）<br>
+                                        ③ Opennsfw2（色情内容检测）<br>
+                                        ④ CnOcr模型（文本图像检测）</p>
+                    <div class="element1-imgcontainer animated">
+                        <img src="{{ url_for('static', filename='images/ocr.png') }}" alt="element1-3">
+                    </div>
+                    <div class="animated" id="ele1-bg-img" style="margin-top: 300px; margin-left: 250px; width: 700px; height: 160px; background-color: #918222;"></div>
+                </div>
+                <div class="element1">
+                    <span class="animated" style="margin-top: 27px; margin-left: 20px;">AUDIO RISK DETECTION</span>
+                    <h2 class="animated">音频风险检测</h2>
+                    <p class="animated">音频风险检测的两个方面：<br>
+                                        ① 内容是否具有诈骗、色情、暴力等内容<br>
+                                        ② 是否为生成的伪造音频<br><br>
+                                        音频风险检测使用的模型：<br>
+                                        ① 语音转文字模型 whisper-large-v3<br>
+                                        ② DeepFake-Audio-Detection-MFCC（音频伪造检测）</p>
+                    <div class="element1-imgcontainer animated">
+                        <img src="{{ url_for('static', filename='images/gradio4.png') }}" alt="element1-4">
+                    </div>
+                    <div class="animated" id="ele1-bg-img" style="margin-top: 65px; margin-left: 360px; width: 180px; height: 400px; background-color: #2a2c9c;"></div>
+                </div>
+                <div class="element1">
+                    <span class="animated" style="margin-top: 27px; margin-left: 20px;">VIDEO RISK DETECTION</span>
+                    <h2 class="animated">视频风险检测</h2>
+                    <p class="animated"><br><br>视频风险检测的几个方面：<br>
+                                        ① 内容是否存在风险&nbsp;&nbsp;&nbsp;&nbsp;② 人脸是否被替换<br>
+                                        ③ 是否存在色情内容&nbsp;&nbsp;&nbsp;&nbsp;④ 音频信号是否伪造<br>
+                                        ⑤ 音频信号内容是否存在风险<br><br>
+                                        视频风险检测使用的模型：<br>
+                                        ① 视觉-文本大模型 LLaVa-NeXT<br>
+                                        ② 大语言模型 llama-chinese<br>
+                                        ③ VideoFACT 模型（人脸替换检测）<br>
+                                        ④ opennsfw2 模型（色情内容检测）<br>
+                                        ⑤ DeepFake-Audio-Detection-MFCC 模型（音频信号伪造检测）<br>
+                                        ⑥ whisper-large-v3 模型（音频内容风险检测）</p>
+                    <div class="element1-imgcontainer animated">
+                        <img src="{{ url_for('static', filename='images/videopipeline.jpg') }}" alt="element1-5">
+                    </div>
+                    <div class="animated" id="ele1-bg-img" style="margin-top: 120px; margin-left: 160px; width: 740px; height: 140px; background-color: #5c277f;"></div>
+                </div>
+            </div>
+    
+            <div class="controls1 animated">
+                <div class="control1" id="control-right">&#9654;</div>
+            </div>
+        </div>
+        <hr id="hr2"/>
+    </div>
+
+    <div id="section3">
+        <div id="section3-title">
+            <h1 style="background-image: linear-gradient(to right, #4e4e4e 50%, transparent 50%);">产品特色功能</h1>
+            <h1 style="background-image: linear-gradient(to left, #e1e1e1 50%, transparent 50%);">产品特色功能</h1>
+        </div>
+        <div id="section3-text" class="animated" style="margin-top: -40%; margin-left: 40px;">
+            <div id="section3-text-decoration-circle"></div>
+            <div id="section3-text-decoration-rectangle" style="top:62px; left:10px;"></div>
+            <div id="section3-text-decoration-rectangle" style="top:97px; left:10px;"></div>
+            <div id="section3-text-decoration-rectangle" style="top:132px; left:10px;"></div>
+            <h2>特色1</h2>
+            <p>我们拥有全天下最厉害的沛权</p>
+            <p>We have the best Peiquan of the world</p>
+            <p>wmyyqtxzlhdpq</p>
+        </div>
+        <div id="section3-text" class="animated" style="margin-top: -20%; margin-left: 140px;">
+            <div id="section3-text-decoration-circle"></div>
+            <div id="section3-text-decoration-rectangle" style="top:62px; left:10px;"></div>
+            <div id="section3-text-decoration-rectangle" style="top:97px; left:10px;"></div>
+            <div id="section3-text-decoration-rectangle" style="top:132px; left:10px;"></div>
+            <h2>特色2</h2>
+            <p>我们拥有全天下最赛高的沛权</p>
+            <p>We have the best Peiquan of the world</p>
+            <p>wmyyqtxzsgdpq</p>
+        </div>
+        <div id="section3-text" class="animated" style="margin-top: -45%; margin-left: 600px;">
+            <div id="section3-text-decoration-circle" style="background: linear-gradient(to right bottom, #2e2e2e 0%, #0f2b6d 70%, #5b84c8 100%);"></div>
+            <div id="section3-text-decoration-rectangle" style="top:62px; left:10px; background: linear-gradient(to left, #2e2e2e 0%, #0f2b6d 70%, #5b84c8 100%);"></div>
+            <div id="section3-text-decoration-rectangle" style="top:97px; left:10px; background: linear-gradient(to left, #2e2e2e 0%, #0f2b6d 70%, #5b84c8 100%);"></div>
+            <div id="section3-text-decoration-rectangle" style="top:132px; left:10px; background: linear-gradient(to left, #2e2e2e 0%, #0f2b6d 70%, #5b84c8 100%);"></div>
+            <h2>特色3</h2>
+            <p>我们拥有全天下最高的沛权</p>
+            <p>We have the heighest Peiquan of the world</p>
+            <p>wmyyqtxzgdpq</p>
+        </div>
+        <div id="section3-text" class="animated" style="margin-top: -25%; margin-left: 700px;">
+            <div id="section3-text-decoration-circle" style="background: linear-gradient(to right bottom, #2e2e2e 0%, #0f2b6d 70%, #5b84c8 100%);"></div>
+            <div id="section3-text-decoration-rectangle" style="top:62px; left:10px; background: linear-gradient(to left, #2e2e2e 0%, #0f2b6d 70%, #5b84c8 100%);"></div>
+            <div id="section3-text-decoration-rectangle" style="top:97px; left:10px; background: linear-gradient(to left, #2e2e2e 0%, #0f2b6d 70%, #5b84c8 100%);"></div>
+            <div id="section3-text-decoration-rectangle" style="top:132px; left:10px; background: linear-gradient(to left, #2e2e2e 0%, #0f2b6d 70%, #5b84c8 100%);"></div>
+            <h2>特色4</h2>
+            <p>我们拥有全天下最帅的沛权</p>
+            <p>We have the most handsome Peiquan of the world</p>
+            <p>wmyyqtxzsdpq</p>
+        </div>
+        <hr id="hr3"/>
+    </div>
+
+    <div id="section4">
+        <div id="section4-subtitles-container">
+            <div id="section4-subtitles">
+                <a href="#section2">进入企业用户端口</a>
+                <div class="section4-subtitles-hover-text">Enter Enterprise User Port</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+</body>
+</html>

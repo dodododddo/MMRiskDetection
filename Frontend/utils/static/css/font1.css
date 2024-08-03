@@ -1,0 +1,48 @@
+/* h1 {
+    color: red; 
+    font-family: 微软雅黑; 
+    font-size: 100px; 
+    text-align: center;
+}
+
+h2 {
+    color: #40B3DF; 
+    font-family: 微软雅黑; 
+    font-size: 50px; 
+    text-align: center;
+}
+
+a {
+    color: aqua; 
+    font-family: 微软雅黑; 
+    font-size: 20px; 
+    text-align: center;
+} */
+
+/* 定义自定义字体 */
+@font-face {
+    font-family: 'ZiHunTi';
+    src: url('ZiHun.ttf') format('truetype');
+    font-weight: 1;
+}
+
+@font-face {
+    font-family: 'AlimamaFangYuanTi';
+    src: url('AlimamaFangYuanTiVF-Thin.ttf') format('truetype');
+    font-weight: 400;
+}
+
+
+
+/* 应用自定义字体 */
+body {
+    font-family: 'AlimamaFangYuanTi', sans-serif;
+}
+
+h1 {
+    font-family: 'AlimamaFangYuanTi', sans-serif;
+}
+
+
+
+
