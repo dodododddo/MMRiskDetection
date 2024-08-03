@@ -1,8 +1,6 @@
 import os
 import ffmpeg
 import datetime
-# /data1/home/jrchen/MMRiskDetection/VideoPipeline/model
-#scp -r D:\cs\python\videofact-wacv-2024-main \ jrchen@10.249.189.249:/data1/home/jrchen/MMRiskDetection/VideoPipeline/model/videofact
 
 # 视频剪辑
 def cut_vedio(input_video, start_time, end_time, output_video):
@@ -94,4 +92,4 @@ if __name__ == '__main__':
     #     print(middle_time_str)
     #     video_to_image(input_video[i],output_image[i],middle_time_str)
     # div_vioce('./data/p_crop_demo.mp4','./data/p_crop_demo.wav')
-    extract_frames('./data/DFMNIST+/fake_dataset/blink/4063.mp4','./data/DFMINST+_image/fake/blink/4063/output_%04d.png',10)
+    extract_frames('./data/DFMNIST+/real_dataset/selected_test/id10139#o21XT0tcU4c#000511#000610.mp4','./data/DFMINST+_image/true/1/output_%04d.png',10)

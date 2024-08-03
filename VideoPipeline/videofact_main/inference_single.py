@@ -17,11 +17,12 @@ from .model.videofact_pl_wrapper import VideoFACTPLWrapper
 
 xfer_ckpt = "model/videofact_wacv/videofact_xfer.ckpt"
 df_ckpt = "model/videofact_wacv/videofact_df.ckpt"
+my_ckpt = "model/videofact_wacv/my_model_3.ckpt"
 
 default_config = yaml.full_load(open("videofact_main/configs/default.yaml"))
 
 
-def get_videofact_model(type: Literal["xfer", "df"] = "xfer"):
+def get_videofact_model(type: Literal["xfer", "df", "my"] = "xfer",train = False):
     if torch.cuda.is_available():
         device = "cuda"
     else:
@@ -35,11 +36,16 @@ def get_videofact_model(type: Literal["xfer", "df"] = "xfer"):
         model = VideoFACTPLWrapper.load_from_checkpoint(
             df_ckpt, model=VideoFACT_Module, map_location=device, **default_config
         )
+    elif type == "my":
+        model = VideoFACTPLWrapper.load_from_checkpoint(
+            my_ckpt, model=VideoFACT_Module, map_location=device, **default_config
+        )
     else:
         raise ValueError(f"Unknown type: {type}")
 
     model = model.to(device)
-    model = model.eval()
+    if not train:
+        model = model.eval()
     return model
 
 
@@ -109,7 +115,7 @@ def load_single_video(
     num_workers,
 ):
     decord.bridge.set_bridge("torch")
-    vr = decord.VideoReader(video_path, num_threads=8)
+    vr = decord.VideoReader(video_path, num_threads=8)[:] / 255.0
     batch_idxs = list(range(0, len(vr), sample_every))
     if shuffle:
         random.shuffle(batch_idxs)
@@ -117,7 +123,7 @@ def load_single_video(
         batch_idxs = batch_idxs[:max_num_samples]
 
     batch_idxs = sorted(batch_idxs)
-    frame_batch = vr.get_batch(batch_idxs)
+    frame_batch = vr[batch_idxs]
     frame_batch = frame_batch.permute(0, 3, 1, 2).float()
     if frame_batch.shape[2] > frame_batch.shape[3]:
         frame_batch = frame_batch.permute(0, 1, 3, 2)

@@ -9,7 +9,7 @@ from videofact_main.utils import *
 from rich.logging import RichHandler
 from typing import *
 
-VideoFACT_xfer = None
+VideoFACT_xfer = None 
 VideoFACT_df = None
 
 videofact_df_threshold = 0.33
@@ -128,7 +128,7 @@ def cal_acc(filePath, flag, choose = 'deepfake'):
         print('\n'+str(result[-2]))
         if result[-1] == res_str:
             res += 1
-        # print('\n' + str(res / all))
+        print('\nall:' + str(all) + ' res:'+ str(res) + ' all/res:' + str(res / all))
     return res / len(file_name)
 
 
@@ -140,8 +140,8 @@ if __name__ == "__main__":
     result = video_deepfake_detection(video_path)
     print('\n'+result[-1])
     print('\n'+str(result[-2]))
-    # filePath = "./data/DFMNIST+/fake_dataset/blink/"
-    # filePath = "./data/DFMNIST+/real_dataset/selected_test/"
+    # filePath = "./data/DFMNIST+/fake_dataset/nod/"
+    filePath = "./data/DFMNIST+/real_dataset/selected_test/"
     # filename = data_needed(filePath)
     # print(filename[0:5])
-    # print(cal_acc(filePath , 1, 'forge'))
+    print(cal_acc(filePath , 1, 'deepfake'))
