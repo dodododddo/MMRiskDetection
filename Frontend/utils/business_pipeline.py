@@ -180,9 +180,9 @@ def pipeline(paths=paths):
             web_url = path
             result_text += '\n[' + str(i) + ']' + '网址：'+ web_url
             webData = web_module(web_url)
-            if webData['image_paths'] != []:
+            if webData['image_paths']:
                 webImage_data = webImage_module(webData['image_paths'])
-                webImage_data = '存在色情信息' if webImage_data else '不存在色情信息'
+                webImage_data = '未检测' if webImage_data is None else '存在色情信息' if webImage_data else '不存在色情信息'
             else:
                 webImage_data = '未检测'
             result_text += '\n网页色情检测：' + webImage_data

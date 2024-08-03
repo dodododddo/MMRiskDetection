@@ -10,7 +10,6 @@ db = client['jrchen']
 collection = db['text']
 
 def insert(input, output):
-    # print(output_structure(output))
     try:
         document = {'input': input, 
                     'output': output_structure(output)}
@@ -22,13 +21,14 @@ def insert(input, output):
 
 def web_pipeline(web_url):
     webData = web_module(web_url)
-    if webData['image_paths'] != []:
+    print(webData['image_paths'])
+    if webData['image_paths']:
         webImage_data = webImage_module(webData['image_paths'])
-        webImage_data = '存在色情信息' if webImage_data else '不存在色情信息'
+        webImage_data = '未检测' if webImage_data is None else '存在色情信息' if webImage_data else '不存在色情信息'
     else:
         webImage_data = '未检测'
     yield webImage_data, ''
-    text = text_module(web_mark(webData['text']))
+    text = text_module(web_mark(webData['text'][:4000]))
     result_text = ''
     for t in text:
         result_text += t
@@ -96,10 +96,11 @@ def text_pipeline(text):
 
 def file_pipeline(file_path):
     fileData = file_module(file_path)
+    print(fileData)
     if fileData['image_path'] == '':
-        fileImageData = fileImage_module(fileData['image_path'])
-    else:
         fileImageData = {'text':[], 'sex': None}
+    else:
+        fileImageData = fileImage_module(fileData['image_path'])
     file_sex = '未检测' if fileImageData['sex'] is None else '存在色情因素' if fileImageData['sex'] else '不存在色情因素' 
     yield '', file_sex
     fileImageText = ''.join(fileImageData['text'])
@@ -156,10 +157,12 @@ def digital_humans_pipeline(image_path, audio_path, text):
     audio_path = ssgen_module(audio_path, audio_text, text)
     video_path = video_generator_module(image_path, audio_path, function_A=False, function_B=False, function_C=True)
     video_path = face_restoration_module(video_path, facial=False, image=False, video=True)
+    video_path = video_path.replace('../..', '.')
     return video_path
 
 def facefusion_pipeline(image_path, video_path):
     video_path = facefusion_module(image_path, video_path)
+    video_path = video_path.replace('../..', '.')
     return video_path
 
 def text_pipeline_test(text):

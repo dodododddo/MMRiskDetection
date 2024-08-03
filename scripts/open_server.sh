@@ -53,4 +53,13 @@ $CONDA_DIRECTORY/envs/videofact/bin/python $ROOT_DIRECTORY/VideoPipeline/model/C
 cd $ROOT_DIRECTORY/Frontend
 $CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/Frontend/utils/sms_server.py > $ROOT_DIRECTORY/server/1931.log &
 
+cd $ROOT_DIRECTORY
+$CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/Frontend/utils/customer_app_demo.py > $ROOT_DIRECTORY/server/7862.log &
+
+cd $ROOT_DIRECTORY/Frontend
+$CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/Frontend/utils/business_app_demo.py > $ROOT_DIRECTORY/server/7763.log &
+
+cd $ROOT_DIRECTORY/Frontend
+$CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/Frontend/utils/MMRiskDetectionApp.py > $ROOT_DIRECTORY/server/5003.log &
+
 

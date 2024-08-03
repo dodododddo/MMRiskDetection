@@ -7,7 +7,7 @@ def web_module(web_url):
 
 def webImage_module(image_paths):
     webImageData = webImage_reply(image_paths)
-    return webImageData
+    return webImageData['sex']
 
 def text_module(text):
     # print(text)

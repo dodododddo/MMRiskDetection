@@ -5,6 +5,9 @@ import uvicorn
 
 class InputData(BaseModel):
     image_path: str
+
+class InputListData(BaseModel):
+    image_path: list
     
 class OutputImageData(BaseModel):
     synthesis: bool
@@ -35,7 +38,7 @@ if __name__ == '__main__':
         return OutputImageData(**imageData.__dict__)
     
     @app.post('/webImage', response_model=OutputWebData)
-    def reply(data: InputData):
+    def reply(data: InputListData):
         img_path = imagePipeline.multi_preprocessing(data.image_path)
         imageData = imagePipeline.detect_sex(img_path)
         return OutputWebData(sex=imageData)

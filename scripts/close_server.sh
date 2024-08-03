@@ -14,3 +14,6 @@ fuser -k 8000/tcp
 fuser -k 9997/tcp 
 fuser -k 9996/tcp 
 fuser -k 9995/tcp
+fuser -k 5003/tcp
+fuser -k 7862/tcp
+fuser -k 7763/tcp

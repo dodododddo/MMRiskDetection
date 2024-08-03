@@ -20,7 +20,7 @@ SERVICES=(
     ["9998"]="$ROOT_DIRECTORY/AudioPipeline/DeepFake-Audio-Detection-MFCC $CONDA_DIRECTORY/envs/Audio_CD/bin/python $ROOT_DIRECTORY/AudioPipeline/DeepFake-Audio-Detection-MFCC/server_for_audioanalyzer.py /tmp/9998.pid $ROOT_DIRECTORY/server/9998.log"
     ["9999"]="$ROOT_DIRECTORY/AudioPipeline $CONDA_DIRECTORY/envs/To_Text/bin/python $ROOT_DIRECTORY/AudioPipeline/server_for_to_text.py /tmp/9999.pid $ROOT_DIRECTORY/server/9999.log"
     ["7763"]="$ROOT_DIRECTORY/Frontend $CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/Frontend/utils/business_app_demo.py /tmp/7763.pid $ROOT_DIRECTORY/server/7763.log"
-    ["7862"]="$ROOT_DIRECTORY/Frontend $CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/Frontend/utils/customer_app_demo.py /tmp/7862.pid $ROOT_DIRECTORY/server/7862.log"
+    ["7862"]="$ROOT_DIRECTORY $CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/Frontend/utils/customer_app_demo.py /tmp/7862.pid $ROOT_DIRECTORY/server/7862.log"
     ["5003"]="$ROOT_DIRECTORY/Frontend $CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/Frontend/utils/MMRiskDetectionApp.py /tmp/5003.pid $ROOT_DIRECTORY/server/5003.log"
 )
 
@@ -34,19 +34,40 @@ start_service() {
     local log_file=${service_info[4]}
 
     local gpu_id=$(python $ROOT_DIRECTORY/scripts/select_gpu.py)
+
+    gpu_ids=$(python $ROOT_DIRECTORY/scripts/select_gpu.py)
+
+    gpu_id_list=($(echo $gpu_ids | jq -r '.[]'))
     
     echo "Starting $service_name..."
     cd $root_dir
-    eval "CUDA_VISIBLE_DEVICES=$gpu_id $python_env $script_path > $log_file 2>&1 &"
-    sleep 10
-    local pid=$(lsof -ti :$service_name)
-    if [ -z "$pid" ]; then
-        echo "Failed to find process for port $service_name."
-        return 1
-    fi
+    if [ "$service_name" -eq 8000 ]; then
+        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[1]} $python_env $script_path > $log_file 2>&1 &"
+        sleep 30
+        local pid=$(lsof -ti :$service_name)
+        if [ -z "$pid" ]; then
+            echo "Failed to find process for port $service_name."
+            return 1
+        fi
 
-    echo "Process ID for port $service_name is $pid."
-    echo $pid > $pid_file
+        echo "Process ID for port $service_name is $pid."
+        echo $pid > $pid_file
+    elif [ "$service_name" -eq 9999 ]; then
+        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[2]} $python_env $script_path > $log_file 2>&1 &"
+        echo $! > $pid_file
+    elif [ "$service_name" -eq 1927 ]; then
+        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+        echo $! > $pid_file
+    elif [ "$service_name" -eq 1111 ]; then
+        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+        echo $! > $pid_file
+    elif [ "$service_name" -eq 6666 ]; then
+        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[1]} $python_env $script_path > $log_file 2>&1 &"
+        echo $! > $pid_file
+    else
+        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[3]} $python_env $script_path > $log_file 2>&1 &"
+        echo $! > $pid_file
+    fi
 }
 
 # 初始化配置

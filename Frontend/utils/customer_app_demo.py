@@ -37,7 +37,7 @@ with gr.Blocks(title=app_name) as demo:
         with gr.Row():
             vid_examples = gr.Examples(
                 ['./Frontend/demo/jr_gen.mp4',
-                 './Frontend/demo/Video_gen.mp4',
+                 './Frontend/demo/wzy.mp4',
                  './Frontend/demo/test.mp4'],
                 inputs=[vid_input],
             )
@@ -48,17 +48,6 @@ with gr.Blocks(title=app_name) as demo:
                                       audio_df_detection,
                                       syn_df_detection,
                                       video_text],queue=True)
-        # vid_submit_btn.click(
-        #     fn=video_pipeline,
-        #     inputs=[vid_input],
-        #     outputs=[
-        #         video_text,
-        #         image_sex_detection,
-        #         video_df_detection,
-        #         audio_df_detection,
-        #         syn_df_detection
-        #     ],
-        # )
 
     # image
     with gr.Tab("图片"):
@@ -72,8 +61,7 @@ with gr.Blocks(title=app_name) as demo:
         image_submit_btn = gr.Button("分析")
         with gr.Row():
             image_examples = gr.Examples(
-                ['./Frontend/demo/pq.jpg',
-                 './Frontend/demo/F_PGN2_00003.png',
+                ['./Frontend/demo/F_PGN2_00003.png',
                  './Frontend/demo/chat.jpg'],
                 inputs=[image_input],
             )
@@ -99,8 +87,7 @@ with gr.Blocks(title=app_name) as demo:
         audio_submit_btn = gr.Button("分析")
         with gr.Row():
             audio_examples = gr.Examples(
-                ['您好，欢迎加入百花齐放群，这里有很多赚钱的机会。请点击链接下载STQ软件，按照提示购买春、夏、秋、东即可获得收益。记得先充值哦，这样才能开始赚钱。',
-                 '您好，我是金源贷款的客服，请问您是否有贷款需求？如果有，可以加我的QQ（QQ号：123456789）详细了解。我们提供快速便捷的贷款服务，您只需下载我们的APP并填写相关信息即可。'],
+                ['您好，我是金源贷款的客服，请问您是否有贷款需求？如果有，可以加我的QQ（QQ号：123456789）详细了解。我们提供快速便捷的贷款服务，您只需下载我们的APP并填写相关信息即可。'],
                 inputs=[text_input],
             )
         audio_submit_btn.click(
@@ -121,12 +108,12 @@ with gr.Blocks(title=app_name) as demo:
             with gr.Column():
                 audio_input = gr.Audio(label='声音', type='filepath')
             with gr.Column():
-                audiodetect_output = gr.Textbox(label='伪造检测')
                 audiotext_output = gr.Textbox(label='风险检测')
+                audiodetect_output = gr.Textbox(label='伪造检测')
         audio_submit_btn = gr.Button("分析")
         with gr.Row():
             audio_examples = gr.Examples(
-                ['./Frontend/demo/output0.wav'],
+                ['./Frontend/demo/demo.wav'],
                 inputs=[audio_input],
             )
         audio_submit_btn.click(
@@ -149,9 +136,7 @@ with gr.Blocks(title=app_name) as demo:
         web_submit_btn = gr.Button("分析")
         with gr.Row():
             web_examples = gr.Examples(
-                ['https://www.hitsz.edu.cn/index.html', 
-                              'https://www.dkxs.net/', 
-                              'https://18mh.org/'],
+                ['https://www.kunnu.com/doupo/'],
                 inputs=[web_input],
             )
         web_submit_btn.click(
@@ -164,10 +149,10 @@ with gr.Blocks(title=app_name) as demo:
         )
 
     # PDF文件
-    with gr.Tab("PDF"):
+    with gr.Tab("文件"):
         with gr.Row():
             with gr.Column():
-                file_input = gr.File(label='PDF')
+                file_input = gr.File(label='文件')
             with gr.Column():
                 filetext_output = gr.Textbox(label='文字风险识别')
                 fileimage_output = gr.Textbox(label='图像色情检测') 
@@ -194,7 +179,7 @@ with gr.Blocks(title=app_name) as demo:
                 dh_audio_input = gr.Audio(label='声音', type='filepath')
                 dh_text_input = gr.Text(label='文本')
             with gr.Column():
-                dh_videopath_output = gr.Textbox(label='输出路径')
+                dh_videopath_output = gr.Video(label='输出视频')
         dh_submit_btn = gr.Button("开始")
         with gr.Row():
             with gr.Column():
@@ -232,16 +217,16 @@ with gr.Blocks(title=app_name) as demo:
                 ff_video_input = gr.Video(label='目标视频')
                 ff_image_input = gr.Image(label='原始照片', type='filepath')
             with gr.Column():
-                ff_videopath_output = gr.Textbox(label='输出路径')
+                ff_videopath_output = gr.Video(label='输出视频')
         ff_submit_btn = gr.Button("开始")
         with gr.Row():
             ff_video_examples = gr.Examples(
-                ['./Frontend/demo/fy.mp4'],
+                ['./Frontend/demo/jr.mp4'],
                 inputs=[ff_video_input],
             )
         with gr.Row():
             ff_image_examples = gr.Examples(
-                ['./Frontend/demo/pq.jpg'],
+                ['./Frontend/demo/rj.jpg'],
                 inputs=[ff_image_input],
             )
         ff_submit_btn.click(

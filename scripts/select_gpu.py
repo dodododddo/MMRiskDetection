@@ -1,4 +1,5 @@
 import subprocess
+import json
 
 def get_gpu_memory():
     """ 使用 nvidia-smi 获取显存使用情况 """
@@ -20,9 +21,11 @@ def get_free_gpu():
     sorted_gpus = sorted(gpu_memory, key=lambda x: x[1], reverse=True)
 
     # 返回显存使用最少的 GPU
-    best_gpu = sorted_gpus[0][0]
-    return best_gpu
+    # best_gpu = sorted_gpus[0][0]
+    # return best_gpu
+    return sorted_gpus
 
 if __name__ == "__main__":
     gpu_id = get_free_gpu()
-    print(gpu_id)
+    gpu_id = [x[0] for x in gpu_id]
+    print(json.dumps(gpu_id))
