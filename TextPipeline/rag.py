@@ -75,11 +75,6 @@ class LLMWrapper:
             message, add_generation_prompt=True, tokenize=False
         ) for message in messages]
         
-        # max_len = max([len(x) for x in input_ids])
-        # pad_token_id = self.tokenizer.pad_token_id
-        # padding_input_ids = [[pad_token_id] * (max_len - len(x)) + x for x in input_ids]
-        # padding_input_ids = torch.tensor(padding_input_ids).to(self.model.device)
-        
         input_ids = self.tokenizer(texts, padding=True, return_tensors="pt").to(self.model.device)
         outputs = self.model.generate(
             **input_ids,
@@ -178,16 +173,23 @@ def get_nearest_indices(embeddings, ref_vectors, k)->torch.Tensor:
     _, top_k_indices = torch.topk(cos_sim, k)
     return top_k_indices
 
+def get_nearest_scores_and_indices(embeddings, ref_vectors, k)->torch.Tensor:
+    if len(embeddings.shape) == 2:
+        cos_sim = torch.nn.functional.cosine_similarity(embeddings.unsqueeze(1), ref_vectors, dim=2)
+    elif len(embeddings.shape) == 1:
+        cos_sim = torch.nn.functional.cosine_similarity(embeddings.unsqueeze(0), ref_vectors, dim=1)
+    scores, top_k_indices = torch.topk(cos_sim, k)
+    return scores, top_k_indices
+
 if __name__ == '__main__':
     test_path = "./dataset/test.json"
     with open(test_path, 'r') as f:
         all_data = json.load(f)
         
 
-    risk_label = ['刷单返利类', '冒充电商物流客服类', '虚假网络投资理财类','贷款、代办信用卡类',
-                    '虚假征信类','虚假购物、服务类','冒充公检法及政府机关类', '冒充领导、熟人类',
-                    '网络游戏产品虚假交易类','网络婚恋、交友类（非虚假网络投资理财类）', '冒充军警购物类诈骗',
-                    '网黑案件', '无风险']
+    risk_label = [ '冒充电商物流客服类', '虚假网络投资理财类', '虚假信用服务类', 
+                '虚假购物、服务类', '冒充公检法及政府机关类', '冒充领导、熟人类',
+                '网络婚恋、交友类', '冒充军警购物类诈骗', '网黑案件','无风险']
         
     prompt = f'''你是一个风险判断的专家，你将接受一些诈骗案件示例作为参考，然后接受一个短信文本，请按输出格式完成以下两个任务：
                     输出格式：{{'风险类别':'...', '风险点':'...'}}
@@ -219,4 +221,3 @@ if __name__ == '__main__':
         print(f'原始文本: {all_data[idx]}')
         print(f'模型回复: {resp.answer}')
         print(f'参考案例: {resp.ref_examples}')
-    # print(llm(['我爱你', '写一首诗']))
