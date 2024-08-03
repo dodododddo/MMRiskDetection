@@ -2,7 +2,12 @@ import csv
 import json
 import re
 import random
+from tqdm import tqdm
 
+def batch_iterator(dataset, batch_size=256):
+    for i in tqdm(range(0, len(dataset), batch_size)):
+        yield dataset[i:i + batch_size]
+        
 def preprocess(file_path, dst_path):
     dst = []
     # 读取CSV文件
