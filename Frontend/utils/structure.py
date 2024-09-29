@@ -5,11 +5,10 @@ def web_structure(web_text):
                '网页文字内容': web_text}
     return content
 
-def image_structure(image_text, image_content, risk_content):
+def image_structure(image_text, image_content):
     content = {'来源': '图片', 
                '图片上文字内容': image_text, 
-               '图片内容': image_content, 
-               '图片风险内容': risk_content}
+               '图片内容': image_content}
     return content
 
 def audio_structure(audio_text):

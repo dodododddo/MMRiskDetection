@@ -3,8 +3,8 @@ def web_mark(web_text):
     content = f"来源: 网页, 网页文字内容: {web_text}"
     return content
 
-def image_mark(image_text, image_content, risk_content, image_synthesis):
-    content = f"来源: 图片, 图片上文字内容: {image_text}, 图片内容: {image_content}, 图片风险内容: {risk_content}, 图片人脸是否伪造：{image_synthesis}"
+def image_mark(image_text, image_content, image_synthesis):
+    content = f"来源: 图片, 图片上文字内容: {image_text}, 图片内容: {image_content}, 图片人脸是否伪造：{image_synthesis}"
     return content
 
 def audio_mark(audio_text):

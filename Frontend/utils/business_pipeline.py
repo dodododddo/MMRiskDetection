@@ -4,10 +4,77 @@ from structure import *
 import re
 from pymongo import MongoClient
 import time
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+import io
+from PIL import Image
+import numpy as np
 
-paths=['../Frontend/demo/test.mp4','../Frontend/demo/output0.wav', '../Frontend/demo/F_PGN2_00003.png',
+paths=['../Frontend/demo/output0.wav', '../Frontend/demo/F_PGN2_00003.png',
        '您好，欢迎加入百花齐放群，这里有很多赚钱的机会。请点击链接下载STQ软件，按照提示购买春、夏、秋、东即可获得收益。记得先充值哦，这样才能开始赚钱。',
-       'https://18mh.org/', '../Frontend/demo/template.pdf']
+       'https://18mh.org/', '../Frontend/demo/template.pdf', '../Frontend/demo/test.mp4']
+
+ # 添加字体路径
+font_path = "/data1/home/jrchen/MMRiskDetection/SimHei.ttf"  # 替换为实际的字体文件路径
+fm.fontManager.addfont(font_path)
+prop = fm.FontProperties(fname=font_path)
+
+plt.rcParams['font.sans-serif'] = [prop.get_name()]
+plt.rcParams['axes.unicode_minus'] = False  # 正常显示负号
+
+# def plot_bar_chart(count):
+#     categories = ['视频', '图片', '音频', '文本', '网页', '文件']
+
+#     fig, ax = plt.subplots()
+#     ax.bar(categories, count)
+#     ax.set_title('风险统计', fontproperties=prop)
+#     ax.set_ylabel('数量', fontproperties=prop)
+#     ax.set_ylim(0, max(count) + 1)
+    
+#     buf = io.BytesIO()
+#     plt.savefig(buf, format='png')
+#     buf.seek(0)
+    
+#     # 将 BytesIO 对象转换为 PIL 图像对象
+#     img = Image.open(buf)
+    
+#     return img
+
+def plot_bar_chart(count):
+    categories = ['视频', '图片', '音频', '文本', '网页', '文件']
+
+    fig, ax = plt.subplots()
+    ax.bar(categories, count)
+    ax.set_title('风险统计', fontproperties=prop)
+    ax.set_ylabel('数量', fontproperties=prop)
+    ax.set_ylim(0, max(count) + 1)
+
+    # 将 Matplotlib 图像转换为 numpy 数组
+    fig.canvas.draw()  # 渲染图像
+    img = np.array(fig.canvas.renderer.buffer_rgba())
+
+    plt.close(fig)  # 关闭图像，释放内存
+
+    # 将 numpy 数组转换为 PIL 图像对象
+    img = Image.fromarray(img)
+
+    return img
+
+def plot_pie_chart(count):
+    categories = ['视频', '图片', '音频', '文本', '网页', '文件']
+    
+    fig, ax = plt.subplots()
+    ax.pie(count, labels=categories, autopct='%1.1f%%', startangle=140)  # 绘制饼状图
+    ax.set_title('风险统计')
+    
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    
+    # 将 BytesIO 对象转换为 PIL 图像对象
+    img = Image.open(buf)
+    
+    return img
 
 def risk_count(count):
     return ('有风险视频数：' + str(count[0]) + '\n有风险图片数：' + str(count[1])
@@ -52,6 +119,7 @@ def pipeline(paths=paths):
             yield result_text, risk_count(count)
             audio_text, audio_detect = '', ''
             if video_extract['audio'] != 'no_audio':
+                video_extract['audio'] = video_extract['audio'].replace('../', '../../')
                 audio_text = audio_to_text_module(video_extract['audio'])
                 audio_detect = audio_detect_module(video_extract['audio'])
             audio_deepfake_detection = audio_detect['fake_or_not'] if audio_detect != '' else None
@@ -96,9 +164,9 @@ def pipeline(paths=paths):
             yield result_text, risk_count(count)
             if imageData['have_characters'] is not None:
                 if imageData['have_characters'] == True:
-                    text = image_mark(imageData['ocr_content'], imageData['image_content'], imageData['risk'], image_synthesis)
+                    text = image_mark(imageData['ocr_content'], imageData['image_content'], image_synthesis)
                 else:
-                    text = image_mark('无', imageData['image_content'], imageData['risk'], image_synthesis)
+                    text = image_mark('无', imageData['image_content'], image_synthesis)
                 flag = False
                 text = text_module(text)
                 text1 = ''

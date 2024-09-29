@@ -26,6 +26,7 @@ with gr.Blocks(title=app_name) as demo:
     with gr.Tab("视频"):
         with gr.Row():
             with gr.Column():
+                gr.Markdown("**本项目已对延迟进行优化，但由于本服务器被多个科研项目使用，项目可用显卡有限，可用于KVCache的显存不足，延迟波动较大，视频较长时推理最长约需70s，请耐心等待。带来不便，万分抱歉**")
                 vid_input = gr.Video(label='视频')
             with gr.Column():
                 video_text = gr.Textbox(label='风险识别')
@@ -36,8 +37,7 @@ with gr.Blocks(title=app_name) as demo:
         vid_submit_btn = gr.Button("分析")
         with gr.Row():
             vid_examples = gr.Examples(
-                ['./Frontend/demo/jr_gen.mp4',
-                 './Frontend/demo/wzy.mp4',
+                ['./Frontend/demo/wzy.mp4',
                  './Frontend/demo/test.mp4'],
                 inputs=[vid_input],
             )
@@ -175,6 +175,7 @@ with gr.Blocks(title=app_name) as demo:
     with gr.Tab("数字人"):
         with gr.Row():
             with gr.Column():
+                gr.Markdown("**本项目已对延迟进行优化，但由于本服务器被多个科研项目使用，项目可用显卡有限，可用于KVCache的显存不足，延迟波动较大，生成最长约需300s，请耐心等待。带来不便，万分抱歉**")
                 dh_image_input = gr.Image(label='图片', type='filepath')
                 dh_audio_input = gr.Audio(label='声音', type='filepath')
                 dh_text_input = gr.Text(label='文本')
@@ -194,7 +195,7 @@ with gr.Blocks(title=app_name) as demo:
                 )
             with gr.Column():
                 text_examples = gr.Examples(
-                    ['要就有要就有'],
+                    ['账户异常，请确认'],
                     inputs=[dh_text_input],
                 )
         
@@ -214,6 +215,7 @@ with gr.Blocks(title=app_name) as demo:
     with gr.Tab("换脸"):
         with gr.Row():
             with gr.Column():
+                gr.Markdown("**本项目已对延迟进行优化，但由于本服务器被多个科研项目使用，项目可用显卡有限，可用于KVCache的显存不足，延迟波动较大，生成最长约需70s，请耐心等待。带来不便，万分抱歉**")
                 ff_video_input = gr.Video(label='目标视频')
                 ff_image_input = gr.Image(label='原始照片', type='filepath')
             with gr.Column():

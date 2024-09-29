@@ -4,6 +4,19 @@ from structure import *
 import re
 from pymongo import MongoClient
 import time
+import os
+import shutil
+
+# def is_chinese(string):
+#     """
+#     检查整个字符串是否包含中文
+#     :param string: 需要检查的字符串
+#     :return: bool
+#     """
+#     for ch in string:
+#         if u'\u4e00' <= ch <= u'\u9fff':
+#             return True
+#     return True
 
 client = MongoClient('mongodb://jrchen:jrchen@127.0.0.1:27017/jrchen')
 db = client['jrchen']
@@ -45,9 +58,12 @@ def image_pipeline(image_path):
     yield image_synthesis, image_sex, ''
     if imageData['have_characters'] is not None:
         if imageData['have_characters'] == True:
-            text = image_mark(imageData['ocr_content'], imageData['image_content'], imageData['risk'], image_synthesis)
+            if len(imageData['ocr_content']) >= 20: 
+                text = image_mark(imageData['ocr_content'], '无', image_synthesis)
+            else:
+                text = image_mark(imageData['ocr_content'], imageData['image_content'], image_synthesis)
         else:
-            text = image_mark('无', imageData['image_content'], imageData['risk'], image_synthesis)
+            text = image_mark('无', imageData['image_content'], image_synthesis)
         text = text_module(text)
         result_text = ''
         for t in text:
@@ -56,7 +72,7 @@ def image_pipeline(image_path):
     else:
         result_text = '未检测'
         yield image_synthesis, image_sex, result_text.replace(' ', '')
-    insert(image_structure(imageData['ocr_content'], imageData['image_content'], imageData['risk']), result_text.replace(' ', ''))
+    insert(image_structure(imageData['ocr_content'], imageData['image_content']), result_text.replace(' ', ''))
 
 
 def audio_pipeline(audio_path):
@@ -111,13 +127,16 @@ def file_pipeline(file_path):
         yield result_text.replace(' ', ''), file_sex
     insert(file_structure(fileData['text'], fileImageText), result_text.replace(' ', ''))
     
-    
-
 def video_pipeline(video_path): 
+    print(time.time())
     video_extract = video_extract_module(video_path)
+    print(time.time())
     video_message = video_message_module(video_path)
+    print(time.time())
     video_fake_face = video_fakeface_module(video_path)
+    print(time.time())
     videoImageData = videoImage_module(video_extract['image']) 
+    print(time.time())
     video_sex = '未检测' if videoImageData['sex'] is None else '存在色情信息' if videoImageData['sex'] else '不存在色情信息'
     yield video_sex, '', '', '', ''
     if (video_message['deepfake_detection'] is None and video_fake_face is None):
@@ -132,12 +151,15 @@ def video_pipeline(video_path):
     yield video_sex , vid_df_text, '', '', ''
     audio_text, audio_detect = '', ''
     if video_extract['audio'] != 'no_audio':
+        video_extract['audio'] = video_extract['audio'].replace('..', '../..')
         audio_text = audio_to_text_module(video_extract['audio'])
+        print(time.time())
         audio_detect = audio_detect_module(video_extract['audio'])
+        print(time.time())
     audio_deepfake_detection = audio_detect['fake_or_not'] if audio_detect != '' else None
     aud_df_text = '未检测' if audio_deepfake_detection is None else '伪造' if audio_deepfake_detection else '真实'
     yield video_sex , vid_df_text, aud_df_text, '', ''
-    syn_deepfake_detection = None if (audio_deepfake_detection is None or video_deepfake_detection is None) else video_deepfake_detection or audio_deepfake_detection
+    syn_deepfake_detection = None if (audio_deepfake_detection is None and video_deepfake_detection is None) else video_deepfake_detection or audio_deepfake_detection
     syn_df_text = '未检测' if syn_deepfake_detection is None else '伪造' if syn_deepfake_detection else '真实'
     yield video_sex , vid_df_text, aud_df_text, syn_df_text, ''
     video_deepfake_detection = '未检测' if video_deepfake_detection is None else '伪造' if video_deepfake_detection else '真实'
@@ -145,6 +167,7 @@ def video_pipeline(video_path):
     syn_deepfake_detection = '未检测' if syn_deepfake_detection is None else '伪造' if syn_deepfake_detection else '真实'
 
     text = text_module(video_mark(video_message['describe'], video_message['risk'] , audio_text, video_deepfake_detection, audio_deepfake_detection))
+    print(time.time())
     result_text = ''
     for t in text:
         result_text += t
@@ -152,6 +175,16 @@ def video_pipeline(video_path):
     insert(video_structure(video_message['describe'], video_message['risk'] , audio_text), result_text)
    
 def digital_humans_pipeline(image_path, audio_path, text):
+    path = 'DataBuffer/DigitalBuffer/Video_gen'
+    if os.path.exists(path):
+        if os.path.isfile(path):
+            os.remove(path)
+            print(f"文件 '{path}' 已删除")
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
+            print(f"目录 '{path}' 已删除")
+    else:
+        print(f"路径 '{path}' 不存在")
     image_path = face_restoration_module(image_path, facial=False, image=True, video=False)
     audio_text = audio_to_text_module(audio_path)
     audio_path = ssgen_module(audio_path, audio_text, text)
@@ -175,4 +208,6 @@ def text_pipeline_test(text):
 if __name__ == '__main__':
     # print(text_pipeline_test('【美团】您的外卖已放在哈工大南门一号柜外卖柜73格口，点击 dpurl.cn/pxfbjRLz 或使用7073取件'))
     # print(video_extract_module('../Frontend/demo/p_demo.mp4'),video_message_module('../Frontend/demo/p_demo.mp4'))
-    print(digital_humans_pipeline('../../Frontend/demo/pq.jpg', '../../Frontend/demo/SSB00050005.wav', '要就有要就有'))
+    # print(digital_humans_pipeline('../../Frontend/demo/pq.jpg', '../../Frontend/demo/SSB00050005.wav', '要就有要就有'))
+    for x in video_pipeline('Frontend/demo/wzy.mp4'):
+        print(x)
