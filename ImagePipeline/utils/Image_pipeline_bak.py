@@ -7,24 +7,6 @@ from io import BytesIO
 import opennsfw2 as n2
 import concurrent.futures
 import os
-import tensorflow as tf
-import psutil
-
-def check_port_in_use(port):
-    for conn in psutil.net_connections(kind='inet'):
-        if conn.laddr.port == port:
-            return conn.pid  # 返回占用该端口的进程 ID
-    return None
-
-gpus = tf.config.list_physical_devices('GPU')
-if gpus:
-    try:
-        for gpu in gpus:
-            # 设置显存增长模式
-            tf.config.experimental.set_memory_growth(gpu, True)
-    except RuntimeError as e:
-        print(e)
-
 
 class ImageData():
     def __init__(self, synthesis:bool, fakeface:bool, have_characters:bool, ocr_content:str, image_content:str, sex:bool):
@@ -44,7 +26,7 @@ class ImageData():
         return str(self.__dict__)
 
 class ImagePipeline:
-    def __init__(self, arch='CLIP:ViT-L/14', risk_url="http://127.0.0.1:9000/vlm", 
+    def __init__(self, arch='CLIP:ViT-L/14', risk_url="http://127.0.0.1:1927/image", 
                  face_detect_model_weight="model/UniversalFakeDetect/checkpoints/clip_vitl14/ffhq_dffd_best.pth", 
                  synthesis_detect_model_weight="model/UniversalFakeDetect/pretrained_weights/fc_weights.pth"):
         self.arch = arch
@@ -123,7 +105,6 @@ class ImagePipeline:
         if isinstance(img_path, BytesIO):
             return ''
         prompt = "[INST] <image>\nPlease describe the content of the image.[/INST]"
-        # prompt = "请描述图片内容."
         return self._llava_requests(img_path, prompt)
     
     # def _detect_risk(self, img_path):

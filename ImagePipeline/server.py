@@ -15,7 +15,6 @@ class OutputImageData(BaseModel):
     have_characters: bool
     ocr_content: str
     image_content: str
-    risk: str
     sex: bool
 
 class OutputVideoData(BaseModel):
