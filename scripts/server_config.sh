@@ -6,6 +6,7 @@ SERVICES=(
     ["1927"]="$ROOT_DIRECTORY/VideoPipeline $CONDA_DIRECTORY/envs/videofact/bin/python $ROOT_DIRECTORY/VideoPipeline/server.py /tmp/1927.pid $ROOT_DIRECTORY/server/1927.log"
     ["8000"]="$ROOT_DIRECTORY/TextPipeline $CONDA_DIRECTORY/bin/python $ROOT_DIRECTORY/TextPipeline/scripts/start.py /tmp/8000.pid $ROOT_DIRECTORY/server/8000.log"
     ["1111"]="$ROOT_DIRECTORY/TextPipeline $CONDA_DIRECTORY/bin/python $ROOT_DIRECTORY/TextPipeline/mm_server.py /tmp/1111.pid $ROOT_DIRECTORY/server/1111.log"
+    ["9000"]="$ROOT_DIRECTORY/VideoPipeline $CONDA_DIRECTORY/envs/videofact/bin/python $ROOT_DIRECTORY/VideoPipeline/vlm_server.py /tmp/9000.pid $ROOT_DIRECTORY/server/9000.log"
     ["1928"]="$ROOT_DIRECTORY/VideoPipeline $CONDA_DIRECTORY/envs/videofact/bin/python $ROOT_DIRECTORY/VideoPipeline/send_server.py /tmp/1928.pid $ROOT_DIRECTORY/server/1928.log" 
     ["1929"]="$ROOT_DIRECTORY/DigitalHumans/Facefusion $CONDA_DIRECTORY/envs/facefusion/bin/python $ROOT_DIRECTORY/DigitalHumans/Facefusion/server.py /tmp/1929.pid $ROOT_DIRECTORY/server/1929.log"
     ["1930"]="$ROOT_DIRECTORY/TextPipeline $CONDA_DIRECTORY/bin/python $ROOT_DIRECTORY/TextPipeline/ext_server.py /tmp/1930.pid $ROOT_DIRECTORY/server/1930.log"
@@ -41,31 +42,50 @@ start_service() {
     
     echo "Starting $service_name..."
     cd $root_dir
+    # if [ "$service_name" -eq 8000 ]; then
+    #     eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+    #     sleep 60
+    #     local pid=$(lsof -ti :$service_name)
+    #     if [ -z "$pid" ]; then
+    #         echo "Failed to find process for port $service_name."
+    #         return 1
+    #     fi
+    #     echo "Process ID for port $service_name is $pid."
+    #     echo $pid > $pid_file
+    # elif [ "$service_name" -eq 9999 ]; then
+    #     eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+    #     echo $! > $pid_file
+    # elif [ "$service_name" -eq 9000 ]; then
+    #     eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+    #     echo $! > $pid_file
+    # elif [ "$service_name" -eq 1927 ]; then
+    #     eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+    #     echo $! > $pid_file
+    # elif [ "$service_name" -eq 1928 ]; then
+    #     eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+    #     echo $! > $pid_file
+    # elif [ "$service_name" -eq 1111 ]; then
+    #     eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+    #     echo $! > $pid_file
+    # elif [ "$service_name" -eq 6666 ]; then
+    #     eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+    #     echo $! > $pid_file
+    # else
+    #     eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
+    #     echo $! > $pid_file
+    # fi
     if [ "$service_name" -eq 8000 ]; then
-        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[1]} $python_env $script_path > $log_file 2>&1 &"
-        sleep 30
+        eval "CUDA_VISIBLE_DEVICES=0 $python_env $script_path > $log_file 2>&1 &"
+        sleep 60
         local pid=$(lsof -ti :$service_name)
         if [ -z "$pid" ]; then
             echo "Failed to find process for port $service_name."
             return 1
         fi
-
         echo "Process ID for port $service_name is $pid."
         echo $pid > $pid_file
-    elif [ "$service_name" -eq 9999 ]; then
-        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[2]} $python_env $script_path > $log_file 2>&1 &"
-        echo $! > $pid_file
-    elif [ "$service_name" -eq 1927 ]; then
-        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
-        echo $! > $pid_file
-    elif [ "$service_name" -eq 1111 ]; then
-        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[0]} $python_env $script_path > $log_file 2>&1 &"
-        echo $! > $pid_file
-    elif [ "$service_name" -eq 6666 ]; then
-        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[1]} $python_env $script_path > $log_file 2>&1 &"
-        echo $! > $pid_file
     else
-        eval "CUDA_VISIBLE_DEVICES=${gpu_id_list[3]} $python_env $script_path > $log_file 2>&1 &"
+        eval "CUDA_VISIBLE_DEVICES=0 $python_env $script_path > $log_file 2>&1 &"
         echo $! > $pid_file
     fi
 }

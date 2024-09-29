@@ -28,12 +28,13 @@ cd $ROOT_DIRECTORY/WebPipeline
 $CONDA_DIRECTORY/envs/image/bin/python $ROOT_DIRECTORY/WebPipeline/server.py > $ROOT_DIRECTORY/server/6667.log &
 
 CUDA_VISIBLE_DEVICES=3 $CONDA_DIRECTORY/bin/python -m vllm.entrypoints.openai.api_server \
-    --model $ROOT_DIRECTORY/TextPipeline/model/llama3-chat-chinese \
-    --served-model-name llama3 \
+    --model $ROOT_DIRECTORY/TextPipeline/model/qwen2-awq \
+    --served-model-name qwen2 \
     --enable_prefix_caching \
     --host 0.0.0.0 \
     --port 8000 \
-    --gpu_memory_utilization 0.4 > $ROOT_DIRECTORY/server/8000.log &
+    --quantization awq
+    --gpu_memory_utilization 0.3 > $ROOT_DIRECTORY/server/8000.log &
 
 cd $ROOT_DIRECTORY/DigitalHumans/CodeFormer
 CUDA_VISIBLE_DEVICES=3 $CONDA_DIRECTORY/envs/codeformer/bin/python $ROOT_DIRECTORY/DigitalHumans/CodeFormer/server_for_FaceRestorer.py > $ROOT_DIRECTORY/server/9997.log &
