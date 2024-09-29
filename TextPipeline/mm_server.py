@@ -34,11 +34,36 @@ with open('dataset/represent_mean_top100_1200.json') as f:
     ref_docs = json.load(f)
 
 bert_model = AutoModelForSequenceClassification.from_pretrained("./finetuned_model/ernie-3.0-xbase-zh-finetune-message", num_labels=10)
+bert_model.eval()
 tokenizer = AutoTokenizer.from_pretrained("model/ernie-3.0-xbase-zh")
 label_cat = [ '冒充电商物流客服类', '虚假网络投资理财类', '虚假信用服务类', 
               '虚假购物、服务类', '冒充公检法及政府机关类', '冒充领导、熟人类',
               '网络婚恋、交友类', '冒充军警购物类诈骗', '网黑案件','无风险']
 reranker = FlagReranker('./model/bge-reranker-large', use_fp16=True)
+# prompt = '''
+#         你是一个风险内容识别专家，你将接受不同来源、从不同模态转换而来的文本，这些文本包含了原模态内容的主要信息，请判断输入文本是否包含风险内容（如诈骗、色情、暴力、煽动、谣言等），并对风险内容进行识别、分析，最后提供防范建议。
+
+#         请按照以下格式输出结果：
+#         1. 是否存在风险内容：是/否
+#         2. 风险摘要：
+#         3. 识别的风险类型：{风险类型1, 风险类型2, ...}
+#         4. 风险内容分析：
+#         - {风险类型1}：{具体分析}
+#         - {风险类型2}：{具体分析}
+#         ...
+#         5. 防范建议：
+#         - {风险类型1}：{具体建议}
+#         - {风险类型2}：{具体建议}
+#         ...
+
+#         风险类型包括但不限于以下几种：
+#         1. 诈骗：涉及财务信息的不合理要求，试图诱导用户提供个人信息或进行转账。
+#         2. 色情：包含露骨的性内容或诱导性的语言。
+#         3. 暴力：鼓励或描述暴力行为，威胁他人安全。
+#         4. 煽动：使用煽动性语言，试图引发群体对特定事件的不满和抗议。
+#         5. 谣言：传播虚假或误导性的信息，可能引发恐慌或误解。
+#     '''
+
 prompt = '''
         你是一个风险内容识别专家，你将接受不同来源、从不同模态转换而来的文本，这些文本包含了原模态内容的主要信息，请判断输入文本是否包含风险内容（如诈骗、色情、暴力、煽动、谣言等），并对风险内容进行识别、分析，最后提供防范建议。
 
@@ -155,9 +180,26 @@ example_answer_2 = '''
 #                 yield f"\n\n案例 {i+1}: {example}" 
 
 def reply(message):
+    if message == None:
+        message = '无输入，请输出未检测'
     answer = ""
+    # response = client.chat.completions.create(
+    #     model="llama3",
+    #     messages=[
+    #         {"role": "system", "content": prompt},
+    #         {"role": "user", "content": example_input_1},
+    #         {"role": "assistant", "content": example_answer_1},
+    #         {"role": "user", "content": example_input_2},
+    #         {"role": "assistant", "content": example_answer_2},
+    #         {"role": "user", "content": example_input_3},
+    #         {"role": "assistant", "content": example_answer_3},
+    #         {"role": "user", "content": message},
+    #     ],
+    #     stream=True,
+    #     temperature=0
+    # )
     response = client.chat.completions.create(
-        model="llama3",
+        model="qwen2",
         messages=[
             {"role": "system", "content": prompt},
             {"role": "user", "content": example_input_1},
@@ -169,19 +211,17 @@ def reply(message):
             {"role": "user", "content": message},
         ],
         stream=True,
-        temperature=0,
-        top_p=1.0
+        temperature=0
     )
     
     next(response)
     for resp in response:
         answer += resp.choices[0].delta.content
-        print(resp.choices[0].delta.content)
         yield resp.choices[0].delta.content
     
     if answer.find('识别的风险类型：诈骗') != -1:
         data = tokenizer(message, return_tensors="pt")
-        cls = label_cat[bert_model(**data).logits.argmax().item()]
+        cls = label_cat[bert_model(**data).logits[:, :-1].argmax().item()]
         yield  f'\n\n6.细分诈骗类型：{cls}'
         
         embedding = embedding_model.encode(message)

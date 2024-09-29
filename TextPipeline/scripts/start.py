@@ -3,7 +3,7 @@ import argparse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_name", type=str, default='llama3')
+    parser.add_argument("--model_name", type=str, default='qwen2')
     args = parser.parse_args()
     if args.model_name == 'llama3':
         os.system('sh scripts/llama3.sh')

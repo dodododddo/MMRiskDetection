@@ -37,7 +37,7 @@ def Ext(content):
     text3 = "您好，请问您是否开通了京东金条？为了您的账户安全，我们建议您尽快注销该服务。请您下载云视讯APP，并在APP内按照指示操作，将您建设银行账户中的资金转至我们提供的建行账户，以完成注销流程。"
 
     response = client.chat.completions.create(
-        model="llama3",
+        model="qwen2",
         messages=[
             {"role": "system", "content": prompt},
             {"role": "user", "content": text1},
