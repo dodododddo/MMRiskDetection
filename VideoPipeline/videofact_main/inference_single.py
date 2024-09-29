@@ -115,7 +115,7 @@ def load_single_video(
     num_workers,
 ):
     decord.bridge.set_bridge("torch")
-    vr = decord.VideoReader(video_path, num_threads=8)[:] / 255.0
+    vr = decord.VideoReader(video_path, num_threads=128)[:] / 255.0
     batch_idxs = list(range(0, len(vr), sample_every))
     if shuffle:
         random.shuffle(batch_idxs)
