@@ -6,37 +6,37 @@ import os
 import shutil
 
 def format_time(seconds):
-        td = timedelta(seconds=seconds)
-        hours, remainder = divmod(td.total_seconds(), 3600)
-        minutes, seconds = divmod(remainder, 60)
-        return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
+    td = timedelta(seconds=seconds)
+    hours, remainder = divmod(td.total_seconds(), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
 
 def extract_frames_as_images(video_path):
-        output_folder = '../DataBuffer/VideoImageBuffer'
-        if os.path.isdir(output_folder):
-            shutil.rmtree(output_folder)
-        os.makedirs(output_folder)
+    output_folder = '../DataBuffer/VideoImageBuffer'
+    if os.path.isdir(output_folder):
+        shutil.rmtree(output_folder)
+    os.makedirs(output_folder)
 
-        # 获取视频信息
-        probe = ffmpeg.probe(video_path)
-        video_info = next(stream for stream in probe['streams'] if stream['codec_type'] == 'video')
-        duration = float(video_info['duration'])
-        
-        output_pattern = os.path.join(output_folder, 'frame_%02d.png')
-        fps = 10 / duration 
+    # 获取视频信息
+    probe = ffmpeg.probe(video_path)
+    video_info = next(stream for stream in probe['streams'] if stream['codec_type'] == 'video')
+    duration = float(video_info['duration'])
+    
+    output_pattern = os.path.join(output_folder, 'frame_%02d.png')
+    fps = 10 / duration 
 
-        # 运行ffmpeg命令，将视频输出到管道中
-        (
-        ffmpeg
-        .input(video_path)
-        .output(output_pattern, vf=f'fps={fps}')
-        .run(overwrite_output=True)
-        )
-        return output_folder
+    # 运行ffmpeg命令，将视频输出到管道中
+    (
+    ffmpeg
+    .input(video_path)
+    .output(output_pattern, vf=f'fps={fps}')
+    .run(overwrite_output=True)
+    )
+    return output_folder
 
 def extract_audio_from_video(video_path):
     name = video_path.split('/')[-1].split('.')[0]
-    output_folder = '../../DataBuffer/VideoAudioBuffer'
+    output_folder = '../DataBuffer/VideoAudioBuffer'
     os.makedirs(output_folder, exist_ok=True)
     audio_path = output_folder +  '/' + name + '.wav'
     try:
@@ -76,5 +76,8 @@ class SendData():
 
     def get(self):
         print(self.image, self.audio)
+
+if __name__ == '__main__':
+    extract_frames_as_images('./data/p_demo.mp4')
 
     

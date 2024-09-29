@@ -13,11 +13,11 @@ class OutputData(BaseModel):
     audio: str
 
 if __name__ == '__main__':
-    os.environ["CUDA_VISIBLE_DEVICES"] = "3"
     app = FastAPI()
     @app.post('/video_extract', response_model=OutputData)
     def reply(data: InputData):
         print(data.video_path)
+        
         result = video_to_image_audio(data.video_path)
         print(result.image, result.audio)
         return OutputData(image=result.image, audio=result.audio)

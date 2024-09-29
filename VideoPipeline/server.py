@@ -21,7 +21,6 @@ class OutputImageData(BaseModel):
     text: str
 
 if __name__ == '__main__':
-    # os.environ["CUDA_VISIBLE_DEVICES"] = "3"
     videoPipeline = VideoPipeline()
     app = FastAPI()
     @app.post('/video', response_model=OutputVideoData)
@@ -30,10 +29,10 @@ if __name__ == '__main__':
         result = videoPipeline(data.video_path)
         return OutputVideoData(describe=result.describe, risk=result.risk, deepfake_detection=result.deepfake_detection)
     
-    @app.post('/image', response_model=OutputImageData)
-    def reply(data: InputImageData):
-        print(data.image_path, data.prompt)
-        result = videoPipeline.image_to_text(data.image_path,data.prompt)
-        return OutputImageData(text = result)
+    # @app.post('/image', response_model=OutputImageData)
+    # def reply(data: InputImageData):
+    #     print(data.image_path, data.prompt)
+    #     result = videoPipeline.image_to_text(data.image_path,data.prompt)
+    #     return OutputImageData(text = result)
     
     uvicorn.run(app, host="127.0.0.1", port=1927)

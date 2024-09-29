@@ -1,4 +1,4 @@
-from video_pipeline import extract_frames_as_images
+from VideoPipeline.video_pipeline import extract_frames_as_images
 from io import BytesIO
 import requests
 from PIL import Image
